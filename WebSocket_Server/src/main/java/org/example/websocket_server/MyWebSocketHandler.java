@@ -14,18 +14,19 @@ import java.util.List;
 public class MyWebSocketHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> sessions = new ArrayList<>();
-    
+
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String username = session.getAttributes().get("username").toString();
+
         String payload = message.getPayload();
         for(WebSocketSession wss : sessions){
             if(wss.equals(session)){
                 continue;
             }
-            String formatted = MessageFormat.format("{0} : {1}", session.getId(), payload);
+            String formatted = MessageFormat.format("{0} : {1}", username, payload);
             wss.sendMessage(new TextMessage(formatted));
         }
-        System.out.println(sessions);
 
     }
 

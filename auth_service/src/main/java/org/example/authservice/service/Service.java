@@ -41,8 +41,8 @@ public class Service {
         algorithm = Algorithm.HMAC256(authConfig.getKey());
     }
 
-    public void verifyAccessToken(String token) {
-        utils.verifyToken(algorithm, token, ACCESS_TOKEN_LIFE_TIME);
+    public DecodedJWT verifyAccessToken(String token) {
+        return utils.verifyToken(algorithm, token, ACCESS_TOKEN_LIFE_TIME);
     }
 
     public Candidate checkUser(Candidate candidate) {

@@ -1,5 +1,6 @@
 package org.example.authservice.controllers;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.authservice.models.Candidate;
@@ -19,17 +20,20 @@ public class AuthController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void createToken(@RequestBody Candidate candidate, HttpServletResponse response, HttpServletRequest request) {
+    public void createToken(@RequestBody Candidate candidate, HttpServletResponse response) {
         Candidate user = service.checkUser(candidate);
         HashMap<String, String> tokens = service.createTokens(user);
         response.addHeader("accessToken", tokens.get("accessToken"));
         response.addHeader("refreshToken", tokens.get("refreshToken"));
+
     }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void verifyToken(@RequestHeader("accessToken") String token) {
-        service.verifyAccessToken(token);
+    public void verifyToken(@RequestHeader("accessToken") String token, HttpServletResponse response) {
+        DecodedJWT decodedJWT = service.verifyAccessToken(token);
+        String username = decodedJWT.getClaim("username").asString();
+        response.addHeader("username", username);
     }
 
     @GetMapping("/refresh")
