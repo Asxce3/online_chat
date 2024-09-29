@@ -29,7 +29,7 @@ public class Service {
 
     private final Utils utils = new Utils();
 
-    private final long ACCESS_TOKEN_LIFE_TIME = 300;  // 5 minute 180
+    private final long ACCESS_TOKEN_LIFE_TIME = 3000;  // 5 minute 180
 
     private final long REFRESH_TOKEN_LIFE_TIME = 600;   // 3 month 3600 * 24 * 30
 
