@@ -33,7 +33,9 @@ public class AuthController {
     public void verifyToken(@RequestHeader("accessToken") String token, HttpServletResponse response) {
         DecodedJWT decodedJWT = service.verifyAccessToken(token);
         String username = decodedJWT.getClaim("username").asString();
+        String userId = decodedJWT.getClaim("id").toString();
         response.addHeader("username", username);
+        response.addHeader("user_id", userId);
     }
 
     @GetMapping("/refresh")

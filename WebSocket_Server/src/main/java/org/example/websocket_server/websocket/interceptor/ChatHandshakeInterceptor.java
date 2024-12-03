@@ -1,4 +1,4 @@
-package org.example.websocket_server.websocket;
+package org.example.websocket_server.websocket.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,7 +19,9 @@ public class ChatHandshakeInterceptor implements HandshakeInterceptor {
             HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
 
             String username = httpServletRequest.getHeader("username");
+            String userId = httpServletRequest.getHeader("user_id");
             attributes.put("username", username);
+            attributes.put("user_id", userId);
 
         }
         return true;

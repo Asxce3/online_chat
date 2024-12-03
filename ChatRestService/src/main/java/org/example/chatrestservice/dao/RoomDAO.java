@@ -17,18 +17,16 @@ public class RoomDAO {
     }
 
     public List<Room> getRooms() {
-        return jdbcTemplate.query("SELECT * FROM chat_room", new BeanPropertyRowMapper<>(Room.class));
+        return jdbcTemplate.query("SELECT * FROM Room", new BeanPropertyRowMapper<>(Room.class));
     }
 
     public Optional<Room> getRoom(int id) {
-        return jdbcTemplate.query("SELECT * FROM chat_room WHERE id = ?",
+        return jdbcTemplate.query("SELECT * FROM Room WHERE id = ?",
                 new Object[]{id},
                 new BeanPropertyRowMapper<>(Room.class)).stream().findAny();
     }
 
     public void createRoom(Room room) {
-        jdbcTemplate.update("INSERT INTO chat_room VALUES (default, ?, ?)",
-                room.getRoomName(),
-                room.getUsername());
+        jdbcTemplate.update("INSERT INTO Room VALUES (default, ?)", room.getRoomName());
     }
 }

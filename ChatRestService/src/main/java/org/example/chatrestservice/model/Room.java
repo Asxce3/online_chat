@@ -8,6 +8,4 @@ import lombok.Setter;
 public class Room {
     private int id;
     private String roomName;
-    private String session;
-    private String username;
 }

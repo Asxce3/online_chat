@@ -1,0 +1,88 @@
+version:  "4.20.1"
+services:
+  auth_service:
+    container_name: authService
+    volumes:
+      - ./config_files/local.env:/etc/env/local.env:ro
+    depends_on:
+      - psdb
+    build: auth_service/
+    ports:
+      - 8084:8084
+    networks:
+      - chat-network
+
+
+  user_service:
+    container_name: userService
+    volumes:
+      - ./config_files/local.env:/etc/env/local.env:ro
+    depends_on:
+      - psdb
+    build: user_service/
+    ports:
+      - 8081:8081
+    networks:
+      - chat-network
+
+
+  chat_rest_service:
+    container_name: chatRestService
+    volumes:
+      - ./config_files/local.env:/etc/env/local.env:ro
+    depends_on:
+      - psdb
+    build: ChatRestService/
+    ports:
+      - 8083:8083
+    networks:
+      - chat-network
+
+
+  web_socket_server:
+    container_name: webSocketServer
+    volumes:
+      - ./config_files/local.env:/etc/env/local.env:ro
+    depends_on:
+      - psdb
+    build: WebSocket_Server/
+    ports:
+      - 8082:8082
+    networks:
+      - chat-network
+
+
+  psdb:
+    container_name: psdb
+    image: postgres:14.13-alpine
+    volumes:
+      - ./base:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: online_chat
+    ports:
+      - 5432:5432
+    networks:
+      - chat-network
+
+
+  nginx:
+    container_name: nginx-chat
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:8080
+    depends_on:
+      - auth_service
+      - user_service
+      - chat_rest_service
+      - web_socket_server
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge
+

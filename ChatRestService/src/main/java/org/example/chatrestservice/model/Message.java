@@ -1,12 +1,14 @@
-package org.example.websocket_server.model;
+package org.example.chatrestservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 public class Message {
     private int id;
     private int userId;

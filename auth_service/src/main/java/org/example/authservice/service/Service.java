@@ -28,13 +28,9 @@ public class Service {
     private CandidateImpl candidateImpl;
 
     private final Utils utils = new Utils();
-
     private final long ACCESS_TOKEN_LIFE_TIME = 3000;  // 5 minute 180
-
     private final long REFRESH_TOKEN_LIFE_TIME = 600;   // 3 month 3600 * 24 * 30
-
     private final HashMap<String, String> TOKENS = new HashMap<>();
-
     private final Algorithm algorithm ;
 
     public Service(AuthConfig authConfig) {

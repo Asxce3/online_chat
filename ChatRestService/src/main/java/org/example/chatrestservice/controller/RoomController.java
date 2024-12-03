@@ -1,5 +1,7 @@
 package org.example.chatrestservice.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.example.chatrestservice.model.Message;
 import org.example.chatrestservice.model.Room;
 import org.example.chatrestservice.service.RoomService;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,13 @@ public class RoomController {
         roomService.createRoom(room);
     }
 
+    @GetMapping("/{roomId}/")
+    public List<Message> getMessagesByRoomId(@PathVariable int roomId,
+                                             @RequestParam int messageId,
+                                             HttpServletResponse response) {
+        response.setHeader("message_id", messageId + "");
 
+        return roomService.getMessages(roomId, messageId);
+    }
 
 }
