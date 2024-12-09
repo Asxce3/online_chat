@@ -1,5 +1,6 @@
 package org.example.chatrestservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.chatrestservice.model.Message;
 import org.example.chatrestservice.model.Room;
@@ -11,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
-
     private final RoomService roomService;
 
     public RoomController(RoomService roomService) {
@@ -19,8 +19,9 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<Room> getRooms(){
-        return roomService.getRooms();
+    public List<Room> getRooms(HttpServletRequest request){
+        String userId = request.getHeader("user_id");
+        return roomService.getRooms(userId);
     }
 
     @GetMapping("/{id}")

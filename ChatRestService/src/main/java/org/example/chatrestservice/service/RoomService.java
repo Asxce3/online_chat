@@ -19,8 +19,8 @@ public class RoomService {
         this.messageDAO = messageDAO;
     }
 
-    public List<Room> getRooms() {
-        return roomDAO.getRooms();
+    public List<Room> getRooms(String userId) {
+        return roomDAO.getRooms(userId);
     }
 
     public Room getRoom (int id) {

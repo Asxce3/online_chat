@@ -16,8 +16,17 @@ public class RoomDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Room> getRooms() {
-        return jdbcTemplate.query("SELECT * FROM Room", new BeanPropertyRowMapper<>(Room.class));
+    public List<Room> getRooms(String userId) {
+        String query = """
+                SELECT id, room_name 
+                FROM room_person 
+                JOIN Room 
+                ON room_person.room_id = Room.id 
+                WHERE user_id = ?
+                """;
+        return jdbcTemplate.query(query,
+                new Object[] {Integer.parseInt(userId)},
+                new BeanPropertyRowMapper<>(Room.class));
     }
 
     public Optional<Room> getRoom(int id) {
