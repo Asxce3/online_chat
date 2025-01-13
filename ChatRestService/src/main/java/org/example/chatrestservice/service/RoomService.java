@@ -2,9 +2,11 @@ package org.example.chatrestservice.service;
 
 import org.example.chatrestservice.dao.MessageDAO;
 import org.example.chatrestservice.dao.RoomDAO;
+import org.example.chatrestservice.dao.RoomUserDAO;
 import org.example.chatrestservice.model.Message;
 import org.example.chatrestservice.model.Room;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +15,12 @@ import java.util.Optional;
 public class RoomService {
     private final RoomDAO roomDAO;
     private final MessageDAO messageDAO;
+    private final RoomUserDAO roomUserDAO;
 
-    public RoomService(RoomDAO roomDAO, MessageDAO messageDAO) {
+    public RoomService(RoomDAO roomDAO, MessageDAO messageDAO, RoomUserDAO roomUserDAO) {
         this.roomDAO = roomDAO;
         this.messageDAO = messageDAO;
+        this.roomUserDAO = roomUserDAO;
     }
 
     public List<Room> getRooms(String userId) {
@@ -30,17 +34,16 @@ public class RoomService {
         }
         return optRoom.get();
     }
+    @Transactional
+    public void createRoom(Room room, int userId) {
+        int roomId = roomDAO.createRoom(room);
+        roomUserDAO.create(roomId, userId);
 
-    public void createRoom(Room room) {
-        roomDAO.createRoom(room);
     }
 
     public List<Message> getMessages(int roomId, int messageId) {
-        if (messageId == 0) {
-            messageId = messageDAO.getQuantityOfMessages(roomId) + 1;
-            System.out.println(messageId);
-        }
-        return messageDAO.getMessages(roomId, messageId);
+
+        return messageDAO.getMessages(roomId, messageId * 3);
     }
 
 }

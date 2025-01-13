@@ -35,7 +35,10 @@ public class RoomDAO {
                 new BeanPropertyRowMapper<>(Room.class)).stream().findAny();
     }
 
-    public void createRoom(Room room) {
-        jdbcTemplate.update("INSERT INTO Room VALUES (default, ?)", room.getRoomName());
+    public int createRoom(Room room) {
+        return jdbcTemplate.queryForObject(
+                "INSERT INTO Room VALUES (default, ?) returning id",
+                        new Object[]{room.getRoomName()}, Integer.class);
+
     }
 }

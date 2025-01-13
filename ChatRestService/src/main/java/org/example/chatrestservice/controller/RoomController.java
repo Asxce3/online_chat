@@ -19,9 +19,8 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<Room> getRooms(HttpServletRequest request){
-        String userId = request.getHeader("user_id");
-        return roomService.getRooms(userId);
+    public List<Room> getRooms(@RequestHeader String user_id){
+        return roomService.getRooms(user_id);
     }
 
     @GetMapping("/{id}")
@@ -30,8 +29,8 @@ public class RoomController {
     }
 
     @PostMapping
-    public void createRoom(@RequestBody Room room) {
-        roomService.createRoom(room);
+    public void createRoom(@RequestBody Room room, @RequestHeader String user_id) {
+        roomService.createRoom(room, Integer.parseInt(user_id));
     }
 
     @GetMapping("/{roomId}/")
@@ -39,7 +38,6 @@ public class RoomController {
                                              @RequestParam int messageId,
                                              HttpServletResponse response) {
         response.setHeader("message_id", messageId + "");
-
         return roomService.getMessages(roomId, messageId);
     }
 
