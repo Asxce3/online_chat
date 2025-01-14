@@ -3,6 +3,7 @@ package org.example.chatrestservice.service;
 import org.example.chatrestservice.dao.MessageDAO;
 import org.example.chatrestservice.dao.RoomDAO;
 import org.example.chatrestservice.dao.RoomUserDAO;
+import org.example.chatrestservice.exception.LongRoomName;
 import org.example.chatrestservice.model.Message;
 import org.example.chatrestservice.model.Room;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class RoomService {
     }
     @Transactional
     public void createRoom(Room room, int userId) {
+        if(room.getRoomName().length() > 15) {
+            throw new LongRoomName("Имя комнаты слишком длинное");
+        }
         int roomId = roomDAO.createRoom(room);
         roomUserDAO.create(roomId, userId);
 
